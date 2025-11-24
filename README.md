@@ -1,10 +1,10 @@
-# Modulome-Explorer
+# Modulome-Explorer & MetaVIRIA
 **The RNA Virus Modulome** is a conceptual web platform for organizing and exploring the modular architecture of proteins encoded by the realm **Riboviria**, using **UniProtKB** entries as the primary reference system. It deploys the MetaVIRIA Ai-driven algorithm to generate prediction for protein biophysical characterisation and host predictions.
 
 
-# The RNA Virus Modulome & MetaVIRIA (Demo / Beta)
+# The RNA Virus Modulome & MetaVIRIA (Beta_v1)
 
-**Status:** Demo / Beta (front-end prototype only)
+**Status:** Beta_v1 / front-end prototype
 
 **The RNA Virus Modulome** is a conceptual web platform for organizing and exploring the modular architecture of proteins encoded by the realm **Riboviria**, using **UniProtKB** entries as the primary reference system.
 
@@ -15,7 +15,7 @@ The site includes a prototype AI/LLM-inspired component named **MetaVIRIA**, whi
 ## Key Components
 
 - **Modulome Explorer (Demo)**
-  - Mock table of conceptual Riboviria protein modules (e.g. RdRp, capsid, helicase, accessory).
+  - Mock table of conceptual Riboviria protein modules (e.g. RdRp, capsid, helicase, siRNA Silencing, Movement Proteinsaccessory).
   - Filterable by module class, status (reviewed/unreviewed), and text search.
   - Designed to be wired later to UniProtKB or an internal database.
 
@@ -56,4 +56,4 @@ This repo is intended to be deployed as a static site with a single `index.html`
 After a short build, GitHub Pages will provide a URL:
 
 ```text
-https://YOUR_GITHUB_USERNAME.github.io/rna-virus-modulome/
+https://github.io/rna-virus-modulome/
