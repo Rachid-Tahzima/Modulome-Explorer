@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+# Create a new version with embedded JSON data to avoid file loading issues
+
+import json
+
+# Load the network data
+with open('network_data.json', 'r') as f:
+    network_data = json.load(f)
+
+# Convert to JavaScript object string
+network_data_js = json.dumps(network_data, indent=2)
+
+# Create new HTML with embedded data
+html_content = '''<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,18 +23,18 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
             background: #0a0e27;
         }
-
+        
         #graph-container {
             width: 100vw;
             height: 100vh;
         }
-
+        
         #control-panel {
             position: fixed;
             top: 20px;
@@ -37,7 +49,7 @@
             z-index: 1000;
             backdrop-filter: blur(10px);
         }
-
+        
         #control-panel h2 {
             color: #2c3e50;
             margin-bottom: 15px;
@@ -45,33 +57,33 @@
             border-bottom: 3px solid #3498db;
             padding-bottom: 10px;
         }
-
+        
         #control-panel h3 {
             color: #34495e;
             margin-top: 20px;
             margin-bottom: 10px;
             font-size: 1.1em;
         }
-
+        
         .filter-group {
             margin: 15px 0;
             padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
         }
-
+        
         .filter-group label {
             display: block;
             margin-bottom: 8px;
             color: #2c3e50;
             font-weight: 600;
         }
-
+        
         input[type="range"] {
             width: 100%;
             margin: 10px 0;
         }
-
+        
         input[type="text"] {
             width: 100%;
             padding: 10px;
@@ -80,12 +92,12 @@
             font-size: 14px;
             transition: border-color 0.3s;
         }
-
+        
         input[type="text"]:focus {
             outline: none;
             border-color: #3498db;
         }
-
+        
         select {
             width: 100%;
             padding: 10px;
@@ -95,31 +107,31 @@
             background: white;
             cursor: pointer;
         }
-
+        
         .checkbox-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
-
+        
         .checkbox-item {
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
+        
         .checkbox-item input[type="checkbox"] {
             width: 18px;
             height: 18px;
             cursor: pointer;
         }
-
+        
         .checkbox-item label {
             margin: 0;
             cursor: pointer;
             font-weight: normal;
         }
-
+        
         button {
             width: 100%;
             padding: 12px;
@@ -131,26 +143,26 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
+        
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
         }
-
+        
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-
+        
         .btn-secondary {
             background: #ecf0f1;
             color: #2c3e50;
         }
-
+        
         .btn-secondary:hover {
             background: #bdc3c7;
         }
-
+        
         .stats-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -158,35 +170,35 @@
             border-radius: 8px;
             margin: 15px 0;
         }
-
+        
         .stats-box h4 {
             margin-bottom: 10px;
             font-size: 0.9em;
             opacity: 0.9;
         }
-
+        
         .stats-box .stat-value {
             font-size: 2em;
             font-weight: bold;
         }
-
+        
         .legend {
             margin: 15px 0;
         }
-
+        
         .legend-item {
             display: flex;
             align-items: center;
             gap: 10px;
             margin: 8px 0;
         }
-
+        
         .legend-color {
             width: 20px;
             height: 20px;
             border-radius: 50%;
         }
-
+        
         #info-panel {
             position: fixed;
             bottom: 20px;
@@ -199,11 +211,11 @@
             display: none;
             z-index: 1000;
         }
-
+        
         #info-panel.active {
             display: block;
         }
-
+        
         .close-btn {
             position: absolute;
             top: 10px;
@@ -218,7 +230,7 @@
             font-size: 18px;
             line-height: 1;
         }
-
+        
         #loading {
             position: fixed;
             top: 50%;
@@ -230,7 +242,7 @@
             text-align: center;
             z-index: 2000;
         }
-
+        
         .spinner {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #3498db;
@@ -240,12 +252,12 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 20px;
         }
-
+        
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
+        
         .value-display {
             display: inline-block;
             background: #3498db;
@@ -255,21 +267,21 @@
             font-size: 12px;
             margin-left: 5px;
         }
-
+        
         ::-webkit-scrollbar {
             width: 8px;
         }
-
+        
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 10px;
         }
-
+        
         ::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 10px;
         }
-
+        
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
@@ -281,23 +293,23 @@
         <h3>Loading The RNA Virus Modulome...</h3>
         <p>Building 3D network visualization</p>
     </div>
-
+    
     <div id="graph-container"></div>
-
+    
     <div id="control-panel">
         <h2>🧬 Network Explorer</h2>
-
+        
         <div class="stats-box">
             <h4>NETWORK STATISTICS</h4>
             <div class="stat-value" id="visible-nodes">80</div>
             <div style="font-size: 0.9em; margin-top: 5px;">nodes visible</div>
         </div>
-
+        
         <div class="filter-group">
             <label>🔍 Search Nodes</label>
             <input type="text" id="search-input" placeholder="Type to search..." />
         </div>
-
+        
         <div class="filter-group">
             <label>Node Types</label>
             <div class="checkbox-group">
@@ -319,22 +331,22 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="filter-group">
             <label>Minimum Connection Strength <span class="value-display" id="weight-value">1</span></label>
             <input type="range" id="weight-slider" min="1" max="100" value="1" />
         </div>
-
+        
         <div class="filter-group">
             <label>Node Size Scale <span class="value-display" id="size-value">1.0</span></label>
             <input type="range" id="size-slider" min="0.5" max="3" step="0.1" value="1.0" />
         </div>
-
+        
         <div class="filter-group">
             <label>Link Opacity <span class="value-display" id="opacity-value">0.3</span></label>
             <input type="range" id="opacity-slider" min="0.1" max="1" step="0.1" value="0.3" />
         </div>
-
+        
         <h3>🎨 Legend</h3>
         <div class="legend">
             <div class="legend-item">
@@ -354,10 +366,10 @@
                 <span>PF (Pfam)</span>
             </div>
         </div>
-
+        
         <button class="btn-primary" onclick="resetView()">🔄 Reset View</button>
         <button class="btn-secondary" onclick="toggleRotation()">⏸️ Pause Rotation</button>
-
+        
         <div style="margin-top: 20px; padding: 15px; background: #e8f4f8; border-radius: 8px; font-size: 0.85em;">
             <strong>💡 Tips:</strong><br>
             • Click nodes for details<br>
@@ -365,46 +377,42 @@
             • Scroll to zoom<br>
             • Right-click drag to pan
         </div>
-
+        
         <div style="margin-top: 15px; text-align: center; font-size: 0.8em; color: #7f8c8d;">
             <strong>Prof. Dr. ir. Rachid TAHZIMA</strong><br>
             Main Webmaster & Designer
         </div>
     </div>
-
+    
     <div id="info-panel">
         <button class="close-btn" onclick="closeInfo()">×</button>
         <h3 id="info-title">Node Information</h3>
         <div id="info-content"></div>
     </div>
-
+    
     <script>
-        let graphData = null;
+        // EMBEDDED DATA - No external file needed!
+        const NETWORK_DATA = ''' + network_data_js + ''';
+        
+        let graphData = NETWORK_DATA;
         let graph = null;
         let isRotating = true;
         let sizeScale = 1.0;
         let linkOpacity = 0.3;
         let minWeight = 1;
-
-        // Load network data
-        fetch('network_data.json')
-            .then(response => response.json())
-            .then(data => {
-                graphData = data;
-                initGraph();
-                document.getElementById('loading').style.display = 'none';
-            })
-            .catch(error => {
-                console.error('Error loading data:', error);
-                document.getElementById('loading').innerHTML = '<h3>Error loading data</h3><p>Please ensure network_data.json is in the same directory.</p>';
-            });
-
+        
+        // Initialize immediately
+        window.addEventListener('DOMContentLoaded', function() {
+            initGraph();
+            document.getElementById('loading').style.display = 'none';
+        });
+        
         function initGraph() {
             const container = document.getElementById('graph-container');
-
+            
             // Prepare graph data
             const filteredData = filterData();
-
+            
             graph = ForceGraph3D()(container)
                 .graphData(filteredData)
                 .nodeLabel(node => `<div style="background: rgba(0,0,0,0.8); color: white; padding: 10px; border-radius: 5px;">
@@ -423,7 +431,7 @@
                 .backgroundColor('#0a0e27')
                 .enableNodeDrag(true)
                 .d3Force('charge').strength(-120);
-
+            
             // Auto-rotate
             let angle = 0;
             setInterval(() => {
@@ -436,7 +444,7 @@
                 }
             }, 50);
         }
-
+        
         function getNodeColor(node) {
             if (node.type === 'transmission') return '#e91e63';
             if (node.group === 'SSF (SCOP)') return '#2196f3';
@@ -444,16 +452,16 @@
             if (node.group === 'PF (Pfam)') return '#ff9800';
             return '#9e9e9e';
         }
-
+        
         function filterData() {
             if (!graphData) return { nodes: [], links: [] };
-
+            
             const showTransmission = document.getElementById('show-transmission').checked;
             const showSSF = document.getElementById('show-ssf').checked;
             const showG3DSA = document.getElementById('show-g3dsa').checked;
             const showPF = document.getElementById('show-pf').checked;
             const searchTerm = document.getElementById('search-input').value.toLowerCase();
-
+            
             // Filter nodes
             let filteredNodes = graphData.nodes.filter(node => {
                 // Type filter
@@ -461,94 +469,94 @@
                 if (node.group === 'SSF (SCOP)' && !showSSF) return false;
                 if (node.group === 'G3DSA (CATH)' && !showG3DSA) return false;
                 if (node.group === 'PF (Pfam)' && !showPF) return false;
-
+                
                 // Search filter
                 if (searchTerm && !node.label.toLowerCase().includes(searchTerm)) return false;
-
+                
                 return true;
             });
-
+            
             const nodeIds = new Set(filteredNodes.map(n => n.id));
-
+            
             // Filter edges
             let filteredEdges = graphData.edges.filter(edge => {
                 return nodeIds.has(edge.source) && 
                        nodeIds.has(edge.target) && 
                        edge.weight >= minWeight;
             });
-
+            
             // Update stats
             document.getElementById('visible-nodes').textContent = filteredNodes.length;
-
+            
             return {
                 nodes: filteredNodes,
                 links: filteredEdges
             };
         }
-
+        
         function updateGraph() {
             if (graph) {
                 const filteredData = filterData();
                 graph.graphData(filteredData);
             }
         }
-
+        
         function showNodeInfo(node) {
             const panel = document.getElementById('info-panel');
             const title = document.getElementById('info-title');
             const content = document.getElementById('info-content');
-
+            
             title.textContent = node.label;
-
+            
             let html = `
                 <p><strong>Type:</strong> ${node.type === 'transmission' ? 'Transmission Mode' : 'Protein Domain'}</p>
                 <p><strong>Occurrences:</strong> ${node.size} viruses</p>
             `;
-
+            
             if (node.type === 'domain') {
                 html += `<p><strong>Database:</strong> ${node.group}</p>`;
             }
-
+            
             // Find connections
             const connections = graphData.edges.filter(e => 
                 e.source === node.id || e.target === node.id
             );
-
+            
             html += `<p><strong>Connections:</strong> ${connections.length}</p>`;
-
+            
             content.innerHTML = html;
             panel.classList.add('active');
         }
-
+        
         function closeInfo() {
             document.getElementById('info-panel').classList.remove('active');
         }
-
+        
         function resetView() {
             if (graph) {
                 graph.cameraPosition({ x: 0, y: 0, z: 1000 }, { x: 0, y: 0, z: 0 }, 1000);
             }
         }
-
+        
         function toggleRotation() {
             isRotating = !isRotating;
             const btn = event.target;
             btn.textContent = isRotating ? '⏸️ Pause Rotation' : '▶️ Resume Rotation';
         }
-
+        
         // Event listeners
         document.getElementById('show-transmission').addEventListener('change', updateGraph);
         document.getElementById('show-ssf').addEventListener('change', updateGraph);
         document.getElementById('show-g3dsa').addEventListener('change', updateGraph);
         document.getElementById('show-pf').addEventListener('change', updateGraph);
         document.getElementById('search-input').addEventListener('input', updateGraph);
-
+        
         document.getElementById('weight-slider').addEventListener('input', (e) => {
             minWeight = parseInt(e.target.value);
             document.getElementById('weight-value').textContent = minWeight;
             updateGraph();
         });
-
+        
         document.getElementById('size-slider').addEventListener('input', (e) => {
             sizeScale = parseFloat(e.target.value);
             document.getElementById('size-value').textContent = sizeScale.toFixed(1);
@@ -556,7 +564,7 @@
                 graph.nodeVal(node => node.size * sizeScale);
             }
         });
-
+        
         document.getElementById('opacity-slider').addEventListener('input', (e) => {
             linkOpacity = parseFloat(e.target.value);
             document.getElementById('opacity-value').textContent = linkOpacity.toFixed(1);
@@ -566,4 +574,22 @@
         });
     </script>
 </body>
-</html>
+</html>'''
+
+with open('modulome_3d_network_standalone.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+
+print("✅ NEW STANDALONE VERSION CREATED!")
+print("=" * 60)
+print("\nFile: modulome_3d_network_standalone.html")
+print("\n✨ KEY IMPROVEMENT:")
+print("  • Data is now EMBEDDED directly in the HTML")
+print("  • No external JSON file needed")
+print("  • Works anywhere - just open the file!")
+print("  • No more 'Error loading data' message")
+print("\n🚀 USAGE:")
+print("  1. Download modulome_3d_network_standalone.html")
+print("  2. Open it directly in your browser (double-click)")
+print("  3. OR upload to Netlify (single file, no dependencies)")
+print("\n✅ This version is 100% self-contained!")
+print("=" * 60)
