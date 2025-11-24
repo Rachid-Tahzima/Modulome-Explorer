@@ -23,7 +23,7 @@ The site includes a prototype AI/LLM-inspired component named **MetaVIRIA**, whi
   - Small query window where users can paste a protein amino acid sequence.
   - “Predict Host” button runs simple, client-side motif-based heuristics.
   - Output includes an illustrative “predicted host class” and rationale.
-  - **Not for clinical, diagnostic, or real scientific decision-making.**
+  - **Not for clinical, diagnostic decision-making.**
 
 - **Data Source (Conceptual)**
   - Inspired by the UniProtKB search for “Riboviria”:
